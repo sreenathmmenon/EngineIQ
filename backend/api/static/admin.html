@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EngineIQ Admin Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 32px;
+            color: #1e293b;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            color: #64748b;
+            font-size: 16px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .stat-value {
+            font-size: 36px;
+            font-weight: 700;
+            color: #3b82f6;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            color: #64748b;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .section {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 20px;
+        }
+
+        .upload-area {
+            border: 2px dashed #cbd5e1;
+            border-radius: 12px;
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: #f8fafc;
+        }
+
+        .upload-area:hover {
+            border-color: #3b82f6;
+            background: #eff6ff;
+        }
+
+        .upload-area.drag-over {
+            border-color: #3b82f6;
+            background: #dbeafe;
+        }
+
+        .upload-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .upload-text {
+            font-size: 18px;
+            color: #1e293b;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .upload-hint {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .btn {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn:hover {
+            background: #2563eb;
+            transform: translateY(-1px);
+        }
+
+        .btn:disabled {
+            background: #cbd5e1;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background: #64748b;
+        }
+
+        .btn-secondary:hover {
+            background: #475569;
+        }
+
+        .data-sources {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .source-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 16px;
+            background: #f1f5f9;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .source-badge.active {
+            background: #dbeafe;
+            color: #1e40af;
+            font-weight: 500;
+        }
+
+        .source-icon {
+            font-size: 20px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #e2e8f0;
+            border-radius: 3px;
+            overflow: hidden;
+            margin-top: 16px;
+            display: none;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #3b82f6;
+            transition: width 0.3s;
+            width: 0%;
+        }
+
+        .alert {
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .alert-success {
+            background: #d1fae5;
+            color: #065f46;
+            border: 1px solid #6ee7b7;
+        }
+
+        .alert-error {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fca5a5;
+        }
+
+        .file-info {
+            background: #f8fafc;
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 16px;
+            display: none;
+        }
+
+        .supported-formats {
+            background: #f1f5f9;
+            padding: 16px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .supported-formats h4 {
+            color: #1e293b;
+            margin-bottom: 12px;
+            font-size: 15px;
+        }
+
+        .format-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .format-tag {
+            background: white;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            color: #64748b;
+            font-family: 'Courier New', monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>⚙️ EngineIQ Admin Dashboard</h1>
+            <p>Manage and upload content to your intelligent knowledge base</p>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value" id="totalDocs">-</div>
+                <div class="stat-label">Total Documents</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="todayUploads">-</div>
+                <div class="stat-label">Uploaded Today</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="processing">-</div>
+                <div class="stat-label">Processing</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="dataSources">6</div>
+                <div class="stat-label">Data Sources</div>
+            </div>
+        </div>
+
+        <!-- Data Sources -->
+        <div class="section">
+            <h2 class="section-title">Connected Data Sources</h2>
+            <div class="data-sources" id="dataSources">
+                <div class="source-badge active">
+                    <span class="source-icon">📦</span>
+                    <span>Box (<span id="boxCount">-</span> docs)</span>
+                </div>
+                <div class="source-badge active">
+                    <span class="source-icon">💬</span>
+                    <span>Slack (<span id="slackCount">-</span> msgs)</span>
+                </div>
+                <div class="source-badge active">
+                    <span class="source-icon">📂</span>
+                    <span>GitHub (<span id="githubCount">-</span> items)</span>
+                </div>
+                <div class="source-badge active">
+                    <span class="source-icon">📚</span>
+                    <span>Wiki (<span id="wikiCount">-</span> docs)</span>
+                </div>
+                <div class="source-badge active">
+                    <span class="source-icon">🎥</span>
+                    <span>Videos (<span id="videosCount">-</span> files)</span>
+                </div>
+                <div class="source-badge active">
+                    <span class="source-icon">🖼️</span>
+                    <span>Images (<span id="imagesCount">-</span> items)</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Upload Section -->
+        <div class="section">
+            <h2 class="section-title">📤 Upload Content</h2>
+            
+            <div class="alert alert-success" id="successAlert"></div>
+            <div class="alert alert-error" id="errorAlert"></div>
+            
+            <div class="upload-area" id="uploadArea">
+                <div class="upload-icon">☁️</div>
+                <div class="upload-text">Drag & drop files here or click to browse</div>
+                <div class="upload-hint">Upload PDFs, images, videos, or documents</div>
+                <input type="file" id="fileInput" style="display: none;" accept=".pdf,.png,.jpg,.jpeg,.webp,.gif,.mp4,.mov,.avi,.webm,.txt,.md">
+            </div>
+            
+            <div class="file-info" id="fileInfo">
+                <strong>Selected:</strong> <span id="fileName"></span> (<span id="fileSize"></span>)
+            </div>
+            
+            <div class="progress-bar" id="progressBar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            
+            <button class="btn" id="uploadBtn" style="margin-top: 20px; display: none;">Process & Index File</button>
+            
+            <div class="supported-formats">
+                <h4>Supported Formats:</h4>
+                <div class="format-list">
+                    <span class="format-tag">📄 .pdf</span>
+                    <span class="format-tag">🖼️ .png .jpg .jpeg .webp .gif</span>
+                    <span class="format-tag">🎥 .mp4 .mov .avi .webm</span>
+                    <span class="format-tag">📝 .txt .md</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="section">
+            <h2 class="section-title">🚀 Quick Actions</h2>
+            <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                <button class="btn" onclick="window.location.href='/'">🔍 Go to Search</button>
+                <button class="btn btn-secondary" onclick="refreshStats()">🔄 Refresh Stats</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:8000/api/admin';
+        
+        let selectedFile = null;
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            loadStats();
+            setupUploadHandlers();
+        });
+        
+        // Load Stats
+        async function loadStats() {
+            try {
+                // Get data sources with counts
+                const response = await fetch('http://localhost:8000/api/data-sources');
+                const data = await response.json();
+                
+                // Update main stats
+                document.getElementById('totalDocs').textContent = data.total || 0;
+                document.getElementById('todayUploads').textContent = '0';
+                document.getElementById('processing').textContent = '0';
+                
+                // Update data source counts
+                document.getElementById('boxCount').textContent = data.sources.box || 0;
+                document.getElementById('slackCount').textContent = data.sources.slack || 0;
+                document.getElementById('githubCount').textContent = data.sources.github || 0;
+                document.getElementById('wikiCount').textContent = data.sources.wiki || 0;
+                document.getElementById('videosCount').textContent = data.sources.videos || 0;
+                document.getElementById('imagesCount').textContent = data.sources.images || 0;
+            } catch (error) {
+                console.error('Error loading stats:', error);
+            }
+        }
+        
+        function refreshStats() {
+            loadStats();
+            showAlert('success', 'Stats refreshed successfully!');
+        }
+        
+        // Setup Upload Handlers
+        function setupUploadHandlers() {
+            const uploadArea = document.getElementById('uploadArea');
+            const fileInput = document.getElementById('fileInput');
+            const uploadBtn = document.getElementById('uploadBtn');
+            const fileInfo = document.getElementById('fileInfo');
+            
+            // Click to upload
+            uploadArea.addEventListener('click', () => fileInput.click());
+            
+            // File selected
+            fileInput.addEventListener('change', (e) => {
+                if (e.target.files.length > 0) {
+                    selectedFile = e.target.files[0];
+                    showFileInfo(selectedFile);
+                }
+            });
+            
+            // Drag and drop
+            uploadArea.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                uploadArea.classList.add('drag-over');
+            });
+            
+            uploadArea.addEventListener('dragleave', () => {
+                uploadArea.classList.remove('drag-over');
+            });
+            
+            uploadArea.addEventListener('drop', (e) => {
+                e.preventDefault();
+                uploadArea.classList.remove('drag-over');
+                
+                if (e.dataTransfer.files.length > 0) {
+                    selectedFile = e.dataTransfer.files[0];
+                    fileInput.files = e.dataTransfer.files;
+                    showFileInfo(selectedFile);
+                }
+            });
+            
+            // Upload button
+            uploadBtn.addEventListener('click', () => {
+                if (selectedFile) {
+                    uploadFile(selectedFile);
+                }
+            });
+        }
+        
+        // Show File Info
+        function showFileInfo(file) {
+            const fileInfo = document.getElementById('fileInfo');
+            const fileName = document.getElementById('fileName');
+            const fileSize = document.getElementById('fileSize');
+            const uploadBtn = document.getElementById('uploadBtn');
+            
+            fileName.textContent = file.name;
+            fileSize.textContent = formatFileSize(file.size);
+            fileInfo.style.display = 'block';
+            uploadBtn.style.display = 'block';
+        }
+        
+        // Upload File
+        async function uploadFile(file) {
+            const uploadBtn = document.getElementById('uploadBtn');
+            const progressBar = document.getElementById('progressBar');
+            const progressFill = document.getElementById('progressFill');
+            
+            uploadBtn.disabled = true;
+            progressBar.style.display = 'block';
+            hideAlerts();
+            
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('uploaded_by', 'admin');
+            
+            try {
+                const xhr = new XMLHttpRequest();
+                
+                xhr.upload.addEventListener('progress', (e) => {
+                    if (e.lengthComputable) {
+                        const percent = (e.loaded / e.total) * 100;
+                        progressFill.style.width = percent + '%';
+                    }
+                });
+                
+                xhr.addEventListener('load', () => {
+                    if (xhr.status === 200) {
+                        const response = JSON.parse(xhr.responseText);
+                        showAlert('success', `✅ ${file.name} processed and indexed successfully!`);
+                        resetUpload();
+                        loadStats();
+                    } else {
+                        const error = JSON.parse(xhr.responseText);
+                        showAlert('error', `❌ Upload failed: ${error.detail || 'Unknown error'}`);
+                    }
+                    uploadBtn.disabled = false;
+                    progressBar.style.display = 'none';
+                    progressFill.style.width = '0%';
+                });
+                
+                xhr.addEventListener('error', () => {
+                    showAlert('error', '❌ Upload failed. Please try again.');
+                    uploadBtn.disabled = false;
+                    progressBar.style.display = 'none';
+                });
+                
+                xhr.open('POST', `${API_BASE}/upload`);
+                xhr.send(formData);
+                
+            } catch (error) {
+                showAlert('error', `❌ Upload failed: ${error.message}`);
+                uploadBtn.disabled = false;
+                progressBar.style.display = 'none';
+            }
+        }
+        
+        // Reset Upload
+        function resetUpload() {
+            selectedFile = null;
+            document.getElementById('fileInput').value = '';
+            document.getElementById('fileInfo').style.display = 'none';
+            document.getElementById('uploadBtn').style.display = 'none';
+        }
+        
+        // Show Alert
+        function showAlert(type, message) {
+            const alertId = type === 'success' ? 'successAlert' : 'errorAlert';
+            const alert = document.getElementById(alertId);
+            alert.textContent = message;
+            alert.style.display = 'block';
+            
+            setTimeout(() => {
+                alert.style.display = 'none';
+            }, 5000);
+        }
+        
+        function hideAlerts() {
+            document.getElementById('successAlert').style.display = 'none';
+            document.getElementById('errorAlert').style.display = 'none';
+        }
+        
+        // Format File Size
+        function formatFileSize(bytes) {
+            if (bytes < 1024) return bytes + ' B';
+            if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+            return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+        }
+    </script>
+</body>
+</html>
