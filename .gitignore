@@ -66,3 +66,7 @@ uploads/
 *_ANALYSIS.md
 vercel.json
 knowledge_base.snapshot
+
+# Local development scripts
+*.sh
+!scripts/*.sh
