@@ -58,24 +58,31 @@ EngineIQ is an **AI agent** that democratizes knowledge access, giving **EVERYON
 
 ## 💡 **Real Stories, Real Impact**
 
-### **Story 1: Priya's 3 AM Database Crisis** 
-*Junior engineer in Bangalore solves production MongoDB issue in 5 minutes using multimodal search across Wiki, Videos, Images, and Slack - without waking up the US team.*
+### **Story 1: Anh's 3 AM Database Crisis (Vietnam → USA)** 
+*Junior engineer in Ho Chi Minh City solves production MongoDB issue in 5 minutes using multimodal search across Wiki, Videos, Images, and Slack - without waking up the US team.*
 
 **Impact:** Time zone barriers eliminated, junior engineers empowered with instant expert knowledge.
 
 ---
 
-### **Story 2: Rajesh's Architecture Access**
-*Contractor needs payment architecture docs. EngineIQ shows 3 accessible results + explains 2 restricted ones transparently - productive while protecting sensitive data.*
+### **Story 2: Carlos's Architecture Access (Mexico, Contractor)**
+*Contractor in Guadalajara needs payment architecture docs. EngineIQ shows 3 accessible results + explains 2 restricted ones transparently - productive while protecting sensitive data.*
 
 **Impact:** Ethical AI with thoughtful access control, not discrimination.
 
 ---
 
-### **Story 3: Maria's Video Learning**
-*Frontend engineer from Argentina searches "Kubernetes setup" - gets video tutorials, diagrams, and code examples - all accessible regardless of language proficiency.*
+### **Story 3: Fatima's Video Learning (Dubai → Global)**
+*Frontend engineer in Dubai searches "Kubernetes setup" - gets video tutorials, diagrams, and code examples - all accessible regardless of language proficiency.*
 
 **Impact:** Multimodal intelligence breaks language and learning style barriers.
+
+---
+
+### **Story 4: Priya's Onboarding Success (Bangalore, Junior Engineer)**
+*New engineer in Bangalore becomes productive in 3 weeks instead of 12 - finds answers instantly without repeatedly bothering senior US-based team members.*
+
+**Impact:** Faster onboarding, reduced interruptions, global team empowerment.
 
 ---
 

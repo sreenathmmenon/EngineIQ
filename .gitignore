@@ -58,3 +58,11 @@ uploads/
 *.tmp
 *.bak
 *.orig
+
+# Internal planning documents (not for public repo)
+*_CHEAT_SHEET.md
+*_STORIES_*.md
+*_GUIDE.md
+*_ANALYSIS.md
+vercel.json
+knowledge_base.snapshot
